@@ -38,19 +38,7 @@ stages:
               - script: |
                   python -m pip install --upgrade pip
                   pip install keyring artifacts-keyring
-                displayName: 'Install dependencies'
-
-              - script: |
-                  mkdir -p .custom
-                  cat > .custom/pip.conf << EOL
-                  [global]
-                  index-url=https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
-                  EOL
-                  cat .custom/pip.conf
-                displayName: 'Set global index'
-
-              - script: |
-                  pip install python-sample-app==${{ parameters.appVersion }}
+                  pip install python-sample-app==${{ parameters.appVersion }} --index-url https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
                 displayName: 'Install version'
                 env:
-                  PIP_CONFIG_FILE: ".custom/pip.conf"
+                  ARTIFACTS_KEYRING_NONINTERACTIVE_MODE: "true"
