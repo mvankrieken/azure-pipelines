@@ -45,6 +45,7 @@ stages:
                   [global]
                   index-url=https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
                   EOL
+                  export PIP_CONFIG_FILE=custom-pip.conf
                 displayName: 'Set global index'
 
               - script: |
