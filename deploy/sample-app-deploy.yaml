@@ -41,13 +41,16 @@ stages:
                 displayName: 'Install dependencies'
 
               - script: |
-                  cat > custom-pip.conf << EOL
+                  mkdir -p .custom
+                  cat > .custom/pip.conf << EOL
                   [global]
                   index-url=https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
                   EOL
-                  export PIP_CONFIG_FILE=custom-pip.conf
+                  cat .custom/pip.conf
                 displayName: 'Set global index'
 
               - script: |
                   pip install python-sample-app==${{ parameters.appVersion }}
                 displayName: 'Install version'
+                env:
+                  PIP_CONFIG_FILE: ".custom/pip.conf"
