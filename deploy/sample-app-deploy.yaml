@@ -33,12 +33,20 @@ stages:
                   architecture:  'x64' 
                   disableDownloadFromRegistry: true
                   addToPath: true
-                displayName: 'Use Python 3.9'
+                displayName: 'Use Python 3.9' 
 
               - script: |
                   python -m pip install --upgrade pip
                   pip install keyring artifacts-keyring
+                displayName: 'Install dependency'
+
+              - task: PipAuthenticate@1
+                displayName: Login to feed
+                inputs:
+                  artifactFeeds: learning/sample-app
+
+              - script: |
                   pip install python-sample-app==${{ parameters.appVersion }} --index-url https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
-                displayName: 'Install version'
+                displayName: 'Install app'
                 env:
                   ARTIFACTS_KEYRING_NONINTERACTIVE_MODE: "true"
