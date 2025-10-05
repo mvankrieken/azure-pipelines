@@ -11,8 +11,8 @@ parameters:
 stages:
 - stage: Deploy
   jobs:
-    - deployment: Deploy Sample app
-      displayName: 'Deployment'
+    - deployment: deploy_sample_app
+      displayName: 'Deployment sample app'
       environment: 
         name: 'local-kubernetes-dev'
       pool: 
