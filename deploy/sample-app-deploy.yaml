@@ -37,7 +37,7 @@ stages:
 
               - script: |
                   python -m pip install --upgrade pip
-                  pip install keyring artifacts-keyring
+                  pip install artifacts-keyring
                 displayName: 'Install dependency'
 
               - task: PipAuthenticate@1
@@ -46,7 +46,5 @@ stages:
                   artifactFeeds: learning/sample-app
 
               - script: |
-                  pip install python-sample-app==${{ parameters.appVersion }} --index-url https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
+                  pip install python-sample-app==${{ parameters.appVersion }}
                 displayName: 'Install app'
-                env:
-                  ARTIFACTS_KEYRING_NONINTERACTIVE_MODE: "true"
