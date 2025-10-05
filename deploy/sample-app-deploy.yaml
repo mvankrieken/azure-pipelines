@@ -7,6 +7,9 @@ parameters:
     values:
       - koen
       - martin
+  - name: appVersion
+    displayName: App version
+    type: string
 
 stages:
 - stage: Deploy
@@ -45,5 +48,5 @@ stages:
                 displayName: 'Set global index'
 
               - script: |
-                  pip install python-sample-app
+                  pip install python-sample-app==${{ parameters.appVersion }}
                 displayName: 'Install version'
