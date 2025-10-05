@@ -44,6 +44,7 @@ stages:
                 displayName: Login to feed
                 inputs:
                   artifactFeeds: learning/sample-app
+                  onlyAddExtraIndex: true
 
               - script: |
                   pip install python-sample-app==${{ parameters.appVersion }}
