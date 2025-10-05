@@ -6,24 +6,40 @@ parameters:
     type: string
     values:
       - koen
+      - martin
 
-stages:
-- stage: Deploy
-  jobs:
-  - deployment: helloWorld
-    displayName: 'Agent Setup'
-    environment: 
-      name: 'local-kubernetes-dev'
-    pool: 
-      name: Local-kubernetes
-      demands: 
-        - DEF_TYPE -equals deploy
-        - DEF_CUSTOMER_NAME -equals ${{ parameters.customer }}
-    strategy:
-        runOnce:
-          deploy:
-            steps:
-              - script: echo This runs in the default shell on any machine
-              - bash: |
-                  echo This multiline script always runs in Bash.
-                  echo Even on Windows machines!
+pool: 
+  name: Local-kubernetes
+  demands: 
+    - DEF_TYPE -equals deploy
+    - DEF_CUSTOMER_NAME -equals ${{ parameters.customer }}
+
+strategy:
+  matrix:
+    Python39:
+      python.version: '3.9'
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+      architecture:  'x64' 
+      disableDownloadFromRegistry: true
+      addToPath: true
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install keyring artifacts-keyring
+    displayName: 'Install dependencies'
+
+  - script: |
+      cat > custom-pip.conf << EOL
+      [global]
+      index-url=https://pkgs.dev.azure.com/mvk-itsolutions/learning/_packaging/sample-app/pypi/simple/
+      EOL
+    displayName: 'Set global index'
+
+  - script: |
+      pip install python-sample-app
+    displayName: 'Install version'
